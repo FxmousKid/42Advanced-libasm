@@ -12,10 +12,8 @@ on ARM, which I have to do, since i work on a Apple Silicon machine.
 
 </br>
 
-[!TIP]
+>[!TIP]
 > We will achieve this using docker and a image set up with QEMU
-
-</br>
 
 ### Building the QEMU docker image
 ```bash
@@ -26,7 +24,10 @@ docker run --rm --privileged tonistiigi/binfmt --install all
 ```bash
 docker buildx build --platform linux/amd64 -t libasm-dev .
 ```
-[!NOTICE]
+
+</br>
+
+> [!NOTE]
 > We're using the Dockerfile included at the root of the project, which uses alpine:latest
 
 ### Running the docker image
