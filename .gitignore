@@ -1,4 +1,4 @@
 build/
-ircserv
+libasm
 .cache
 compile_commands.json
