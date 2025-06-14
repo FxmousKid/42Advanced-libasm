@@ -1,4 +1,5 @@
 build/
-libasm
+libasm.a
+libasm_tester
 .cache
 compile_commands.json
