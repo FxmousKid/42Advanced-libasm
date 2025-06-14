@@ -1,5 +1,6 @@
 ; 64-bit, System-V ABI, PIE
 ; ssize_t ft_write(int fd, const void *buf, size_t count)
+default rel
 
 global ft_write
 extern __errno_location
@@ -16,11 +17,11 @@ ft_write:
 
 	; Error path -------------------
 	; rax == -ERRNO
-	neg		rax
-	mov		rbx, rax
+	mov		rdx, rax
+	neg		edx
 
-	call	__errno_location
-	mov		[rax], ebx
+	call	__errno_location wrt ..plt
+	mov		[rax], edx
 	mov		rax, -1
 
 .done:
