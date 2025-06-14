@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM python:3-alpine
 
 # Prevent interactive prompts
 ENV TZ=UTC \
@@ -14,7 +14,10 @@ RUN apk update && apk add \
     gdb \
     git \
     bash \
-    ca-certificates \
-    && rm -rf /var/cache/apk/*
+	python3 \
+    ca-certificates && \
+	rm -rf /var/cache/apk/* && \
+	pip install compiledb
+	
 
 WORKDIR /app

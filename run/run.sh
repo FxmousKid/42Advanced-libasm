@@ -1,17 +1,18 @@
 #!/bin/bash
 
-# This script handles running NASM code inside a Docker+QEMU x86_64 setup on ARM (e.g., Asahi Linux)
-# If you're on x86_64 natively, just use 'make'
+# This script handles running NASM code inside a Docker+QEMU x86_64 setup on ARM
+# If you're already on x86_64, just use 'make'
 
 set -e
 
 DOCKER_IMAGE="libasm-alpine"
 DOCKERFILE_PATH="run/Dockerfile"
 PROJECT_DIR="$PWD"
+TESTER_NAME="libasm_tester"
 
 # Default make command
 equals='===================================\n'
-command="echo -ne '$equals' && make && echo -e '$equals' && ./libasm"
+command="echo -ne '$equals' && make && echo -e '$equals' && ./libasm_tester"
 
 # Show help
 show_help() {
@@ -22,6 +23,7 @@ Options:
   -c        Run 'make fclean'
   -r        Run 'make re'
   -b        Rebuild the Docker image for libasm (forces update)
+			! Needed on 1st run
   -h        Show this help message
 
 Examples:
@@ -62,7 +64,7 @@ while getopts "crbh" opt; do
 			command="make fclean"
 			;;
 		r)
-			command="make re"
+			command="compiledb make re"
 			;;
 		b)
 			build_images
