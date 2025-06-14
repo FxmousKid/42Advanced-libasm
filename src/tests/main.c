@@ -2,7 +2,10 @@
 
 int main(void)
 {
-	// printf("Returned value = %d\n", tet_asm());
-	ft_write(1, "sa3ide sako\n", 12);
+	printf("Now launching Tests...\n\n");
+	test_ft_write();
+	write(1, "\n", 1);
+	test_ft_strlen();
+
 	return (0);
 }

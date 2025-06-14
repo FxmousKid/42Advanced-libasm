@@ -6,7 +6,7 @@
 #    By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 18:49:10 by inazaria          #+#    #+#              #
-#    Updated: 2025/06/14 20:56:31 by inazaria         ###   ########.fr        #
+#    Updated: 2025/06/14 22:33:51 by inazaria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ INC_DIR      := ./includes/
 
 C_TEST_FILES_NAMES = tests/main.c 
 C_TEST_FILES_NAMES += tests/ft_write.c
+C_TEST_FILES_NAMES += tests/ft_strlen.c
 
 
 ASM_SRC_FILES_NAMES = asm/ft_strlen.s
@@ -37,7 +38,7 @@ TEST := libasm_tester
 NASM          := nasm
 NASM_CFLAGS   := -f elf64        
 CC            := cc
-CC_CFLAGS     := -Wall -Wextra -Werror -I $(INC_DIR) -no-pie
+CC_CFLAGS     := -Wall -Wextra -Werror -I $(INC_DIR)
 
 # <><><><><><><> Pretty print helpers <><><><><><><><><><><><><><><><>
 
@@ -71,7 +72,7 @@ all: $(NAME) $(TEST)
 
 # Static library from all object files
 $(NAME): $(ASM_OBJ_FILES)
-	@$(ECHO) "$(BROWN)[AR ] Archiving objects into $@ ...$(NC)"
+	@$(ECHO) "$(BROWN)[ARX] Archiving objects into $@ ...$(NC)"
 	@$(AR) $(NAME) $(ASM_OBJ_FILES)
 	@$(ECHO) "$(GREEN)[ARX] Static library built successfully.$(NC)"
 
