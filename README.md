@@ -28,7 +28,7 @@ docker buildx build --platform linux/amd64 -t libasm-dev .
 </br>
 
 > [!NOTE]
-> We're using the Dockerfile included at the root of the project, which uses alpine:latest
+> We're using the Dockerfile included in the run/ folder, which uses python:3-alpine
 
 ### Running the docker image
 ```bash
