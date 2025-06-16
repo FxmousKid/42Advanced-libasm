@@ -6,28 +6,23 @@ global ft_strcmp
 
 section .text
 ft_strcmp:
-	xor		rax, rax ; rax = 0
+	xor		eax, eax ; eax = 0
 
 .loop:
-	mov		al, [rdi + rax]
-	cmp		al, [rsi + rax] ; s1[idx] vs s2[idx]
-	jg		.bigger
-	jl		.smaller
-	cmp		al, 0
-	je		.same
-	inc		rax
+	mov		al, [rdi]
+	mov		bl, [rsi]
+	cmp		al, bl
+	jne		.diff
+	test	al, al ; al == 0 ?
+	je		.done
+	inc		rdi
+	inc		rsi
 	jmp		.loop
-	
 
-.bigger:
-	mov		rax, [rdi + rax]; - [rsi + rax]
-	ret
+.diff:
+	movzx	eax, al
+	movzx	ecx, bl
+	sub		eax, ecx
 
-.smaller:
-	mov		rax, [rsi + rax]
-	neg		rax
-	ret
-
-.same:
-	mov		rax, 0
+.done:
 	ret
