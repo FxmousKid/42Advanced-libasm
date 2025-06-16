@@ -6,7 +6,7 @@
 #    By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 18:49:10 by inazaria          #+#    #+#              #
-#    Updated: 2025/06/16 04:16:29 by inazaria         ###   ########.fr        #
+#    Updated: 2025/06/17 00:30:49 by inazaria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,13 @@ C_TEST_FILES_NAMES = tests/main.c
 C_TEST_FILES_NAMES += tests/ft_write.c
 C_TEST_FILES_NAMES += tests/ft_strlen.c
 C_TEST_FILES_NAMES += tests/ft_strcmp.c
+C_TEST_FILES_NAMES += tests/ft_read.c
 
 
 ASM_SRC_FILES_NAMES = asm/ft_strlen.s
 ASM_SRC_FILES_NAMES += asm/ft_write.s
 ASM_SRC_FILES_NAMES += asm/ft_strcmp.s
+ASM_SRC_FILES_NAMES += asm/ft_read.s
 
 ASM_SRC_FILES := $(addprefix $(SRC_DIR), $(ASM_SRC_FILES_NAMES))
 C_TEST_FILES  := $(addprefix $(SRC_DIR), $(C_TEST_FILES_NAMES))
