@@ -22,14 +22,20 @@ Usage: ./run.sh [options]
 Options:
   -c        Run 'make fclean'
   -r        Run 'make re'
-  -b        Rebuild the Docker image for libasm (forces update)
-			! Needed on 1st run
+  -b        Rebuilds the Docker images (forces update) and runs 
+            the code (! building is Needed on 1st run)
+  -B        Same as -b, but exits after rebuilding
   -h        Show this help message
+  -d        Re links the test executable with -static, then 
+            Debug with QEMU's GDB stub outside of the docker
+  -D        Same as -d, but re builds instead of only relink
+
 
 Examples:
   ./run.sh             # Default: make && ./libasm
   ./run.sh -r          # Run make re
   ./run.sh -cb         # Clean and rebuild image
+  ./run.sh -D          # rebuilds and enters gdb
 EOF
 }
 
@@ -57,8 +63,21 @@ run_image() {
 		zsh -c "$command"
 }
 
+debug_elf() {
+	if [[ "$1" == "build" ]]
+	then
+		command="make re CC_LFLAGS+='-static'"
+	elif [[ "$1" == "link" ]]
+	then
+		command="make link CC_LFLAGS+='-static'"
+	fi
+	run_image
+	exec qemu-x86_64 -g 12345 ./$TESTER_NAME &
+	gdb ./$TESTER_NAME --ex 'target remote :12345'
+}
+
 # Parse flags
-while getopts "crbh" opt; do
+while getopts "crbBhdD" opt; do
 	case $opt in
 		c)
 			command="make fclean"
@@ -68,6 +87,18 @@ while getopts "crbh" opt; do
 			;;
 		b)
 			build_images
+			;;
+		B)
+			build_images
+			exit 0
+			;;
+		d)
+			debug_elf "link"
+			exit 0
+			;;
+		D)
+			debug_elf "build"
+			exit 0
 			;;
 		h)
 			show_help
