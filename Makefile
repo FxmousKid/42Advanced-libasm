@@ -6,7 +6,7 @@
 #    By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 18:49:10 by inazaria          #+#    #+#              #
-#    Updated: 2025/06/17 22:34:37 by inazaria         ###   ########.fr        #
+#    Updated: 2025/06/17 23:22:16 by inazaria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ C_TEST_FILES_NAMES += tests/ft_strcpy.c
 C_TEST_FILES_NAMES += tests/ft_strdup.c
 
 C_BONUS_TEST_FILES_NAMES = tests_bonus/main_bonus.c 
-# C_BONUS_TEST_FILES_NAMES += tests_bonus/.c 
+C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_size_bonus.c 
 
 ASM_SRC_FILES_NAMES = asm/ft_strlen.s
 ASM_SRC_FILES_NAMES += asm/ft_write.s
@@ -122,7 +122,7 @@ $(TEST): $(NAME) $(C_OBJ_FILES)
 # Test executable, links against libasm.a in current dir
 $(TEST_BONUS): $(NAME_BONUS) $(C_BONUS_OBJ_FILES) $(TEST)
 	@$(ECHO) "$(BROWN)[LNK] Building bonus test executable ...$(NC)"
-	@$(CC) $(CC_LFLAGS) $(C_BONUS_OBJ_FILES) -L. -lasm -o $@
+	@$(CC) $(CC_LFLAGS) $(C_BONUS_OBJ_FILES) -L. $(NAME) $(NAME_BONUS) -lasm -o $@
 	@$(ECHO) "$(GREEN)[LNK] Bonus Executable built successfully.$(NC)"
 
 # Handy rule to force relinking
@@ -134,7 +134,7 @@ link: $(NAME)
 # Handy rule to force relinking
 link_bonus: $(NAME_BONUS)
 	@$(ECHO) "$(BROWN)[LNK] Building Bonus test executable ...$(NC)"
-	@$(CC) $(CC_LFLAGS) $(C_BONUS_OBJ_FILES) -L. -lasm -o $(TEST_BONUS)
+	@$(CC) $(CC_LFLAGS) $(C_BONUS_OBJ_FILES) -L. $(NAME) $(NAME_BONUS) -lasm -o $(TEST_BONUS)
 	@$(ECHO) "$(GREEN)[LNK] Bonus Executable built successfully.$(NC)"
 
 
