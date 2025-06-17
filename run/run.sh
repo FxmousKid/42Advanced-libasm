@@ -9,11 +9,15 @@ CONTAINER_NAME="libasm"
 DOCKER_IMAGE="libasm-alpine"
 DOCKERFILE_PATH="run/Dockerfile"
 PROJECT_DIR="$PWD"
-EXECUTABLE_NAME="libasm_tester"
+TESTER_NAME="libasm_tester"
+TESTER_BONUS_NAME="libasm_bonus_tester"
+EXECUTABLE_NAME="$TESTER_NAME"
+DEBUG_PORT=12345
 
 # Default make command
-equals='===================================\n'
+equals='=====================================\n'
 command="echo -ne '$equals' && make && echo -e '$equals' && ./$EXECUTABLE_NAME"
+command_bonus="echo -ne '$equals' && make bonus && echo -e '$equals' && ./$TESTER_BONUS_NAME"
 
 # Show help
 show_help() {
@@ -21,16 +25,20 @@ show_help() {
 Usage: ./$0 [options]
 
 Options:
-  -c        Run 'make fclean'
-  -r        Run 'make re'
   -b        Rebuilds the Docker images (forces update) and runs 
             the code (! building is Needed on 1st run)
   -B        Same as -b, but exits after rebuilding
-  -h        Show this help message
+  -c        Run 'make fclean'
   -d        Re links the test executable with -static, then 
             Debug with QEMU's GDB stub outside of the docker
   -D        Same as -d, but re builds instead of only relink
+  -e        same as -d but for bonus executable
+  -E        same as -D but for bonus executable
+  -h        Show this help message
   -k        Kill the $CONTAINER_NAME container
+  -n        Run 'make bonus'
+  -r        Run 'make re'
+  -R        Run 'make re_bonus'
 
 
 Examples:
@@ -66,33 +74,44 @@ run_image() {
 }
 
 debug_elf() {
-	if [[ "$1" == "build" ]]
+	
+	# For standard
+	if [[ "$1" == "build" && "$#" -eq 1 ]]
 	then
 		command="make re CC_LFLAGS+='-static'"
-	elif [[ "$1" == "link" ]]
+	elif [[ "$1" == "link" && "$#" -eq 1 ]]
 	then
 		command="make link CC_LFLAGS+='-static'"
 	fi
+
+	# For bonus
+	if [[ "$1" == "link" && "$2" == "bonus" ]]
+	then
+		command="make link_bonus CC_LFLAGS+='-static'"
+		EXECUTABLE_NAME="$TESTER_BONUS_NAME"
+	elif [[ "$1" == "build" && "$2" == "bonus" ]]
+	then
+		command="make re_bonus CC_LFLAGS+='-static'"
+		EXECUTABLE_NAME="$TESTER_BONUS_NAME"
+	fi
+
 	run_image
-	exec qemu-x86_64 -g 12345 ./$EXECUTABLE_NAME &
-	gdb ./$EXECUTABLE_NAME --ex 'target remote :12345'
+	exec qemu-x86_64 -g "$DEBUG_PORT" ./"$EXECUTABLE_NAME" &
+	gdb ./$EXECUTABLE_NAME --ex "target remote :$DEBUG_PORT"
 }
 
 # Parse flags
-while getopts ":crbBhdDk" opt; do
+while getopts ":cbBdDeEhknrR" opt; do
 	case $opt in
-		c)
-			command="make fclean"
-			;;
-		r)
-			command="compiledb make re"
-			;;
 		b)
 			build_images
 			;;
 		B)
 			build_images
 			exit 0
+			;;
+		c)
+			command="make fclean"
 			;;
 		d)
 			debug_elf "link"
@@ -102,6 +121,14 @@ while getopts ":crbBhdDk" opt; do
 			debug_elf "build"
 			exit 0
 			;;
+		e)
+			debug_elf "link" "bonus"
+			exit 0
+			;;
+		E)
+			debug_elf "build" "bonus"
+			exit 0
+			;;
 		h)
 			show_help
 			exit 0
@@ -109,6 +136,16 @@ while getopts ":crbBhdDk" opt; do
 		k)
 			docker stop $CONTAINER_NAME
 			exit 0
+			;;
+		n)
+			command="$command_bonus"
+			EXECUTABLE_NAME="$TESTER_BONUS_NAME"
+			;;
+		r)
+			command="compiledb make re"
+			;;
+		R)
+			command="compiledb make re_bonus"
 			;;
 		\?)
 			echo "$0: invalid option -- '$OPTARG'"

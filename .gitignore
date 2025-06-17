@@ -1,5 +1,7 @@
 build/
 libasm.a
+libasm_bonus.a
 libasm_tester
+libasm_bonus_tester
 .cache
 compile_commands.json
