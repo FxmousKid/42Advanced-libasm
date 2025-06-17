@@ -5,19 +5,20 @@
 
 set -e
 
+CONTAINER_NAME="libasm"
 DOCKER_IMAGE="libasm-alpine"
 DOCKERFILE_PATH="run/Dockerfile"
 PROJECT_DIR="$PWD"
-TESTER_NAME="libasm_tester"
+EXECUTABLE_NAME="libasm_tester"
 
 # Default make command
 equals='===================================\n'
-command="echo -ne '$equals' && make && echo -e '$equals' && ./libasm_tester"
+command="echo -ne '$equals' && make && echo -e '$equals' && ./$EXECUTABLE_NAME"
 
 # Show help
 show_help() {
 	cat << EOF
-Usage: ./run.sh [options]
+Usage: ./$0 [options]
 
 Options:
   -c        Run 'make fclean'
@@ -29,13 +30,14 @@ Options:
   -d        Re links the test executable with -static, then 
             Debug with QEMU's GDB stub outside of the docker
   -D        Same as -d, but re builds instead of only relink
+  -k        Kill the $CONTAINER_NAME container
 
 
 Examples:
-  ./run.sh             # Default: make && ./libasm
-  ./run.sh -r          # Run make re
-  ./run.sh -cb         # Clean and rebuild image
-  ./run.sh -D          # rebuilds and enters gdb
+  $0             # Default: make && ./$EXECUTABLE_NAME
+  $0 -r          # Run make re
+  $0 -cb         # Clean and rebuild image
+  $0 -D          # rebuilds and enters gdb
 EOF
 }
 
@@ -55,7 +57,7 @@ build_images() {
 run_image() {
 	docker run --rm -it \
 		--platform linux/amd64 \
-		--name libasm \
+		--name "$CONTAINER_NAME" \
 		-v "$PROJECT_DIR:/app" \
 		-w /app \
 		--network="host" \
@@ -72,12 +74,12 @@ debug_elf() {
 		command="make link CC_LFLAGS+='-static'"
 	fi
 	run_image
-	exec qemu-x86_64 -g 12345 ./$TESTER_NAME &
-	gdb ./$TESTER_NAME --ex 'target remote :12345'
+	exec qemu-x86_64 -g 12345 ./$EXECUTABLE_NAME &
+	gdb ./$EXECUTABLE_NAME --ex 'target remote :12345'
 }
 
 # Parse flags
-while getopts "crbBhdD" opt; do
+while getopts ":crbBhdDk" opt; do
 	case $opt in
 		c)
 			command="make fclean"
@@ -104,7 +106,17 @@ while getopts "crbBhdD" opt; do
 			show_help
 			exit 0
 			;;
+		k)
+			docker stop $CONTAINER_NAME
+			exit 0
+			;;
+		\?)
+			echo "$0: invalid option -- '$OPTARG'"
+			echo "Try '$0 -h' for more information."
+			exit 0
+			;;
 	esac
 done
+shift $((OPTIND - 1))
 
 run_image
