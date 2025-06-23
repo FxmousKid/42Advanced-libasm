@@ -6,7 +6,7 @@
 #    By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 18:49:10 by inazaria          #+#    #+#              #
-#    Updated: 2025/06/17 23:22:16 by inazaria         ###   ########.fr        #
+#    Updated: 2025/06/24 01:49:35 by inazaria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ C_TEST_FILES_NAMES += tests/ft_strdup.c
 
 C_BONUS_TEST_FILES_NAMES = tests_bonus/main_bonus.c 
 C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_size_bonus.c 
+C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_remove_if_bonus.c 
 
 ASM_SRC_FILES_NAMES = asm/ft_strlen.s
 ASM_SRC_FILES_NAMES += asm/ft_write.s
@@ -35,7 +36,7 @@ ASM_SRC_FILES_NAMES += asm/ft_strcpy.s
 ASM_SRC_FILES_NAMES += asm/ft_strdup.s
 
 ASM_BONUS_SRC_FILES_NAMES = asm_bonus/ft_list_size_bonus.s
-# ASM_BONUS_SRC_FILES_NAMES += asm_bonus/.s
+ASM_BONUS_SRC_FILES_NAMES += asm_bonus/ft_list_remove_if_bonus.s
 
 # Mandatory .s and .c files
 ASM_SRC_FILES := $(addprefix $(SRC_DIR), $(ASM_SRC_FILES_NAMES))
@@ -95,7 +96,7 @@ $(BUILD_DIR)%.o : $(SRC_DIR)%.c
 # Default target – build library and test binary
 all: $(NAME) $(TEST) 
 
-bonus: $(NAME_BONUS) $(TEST_BONUS)
+bonus: $(NAME) $(NAME_BONUS) $(TEST_BONUS)
 
 re: fclean all
 
@@ -120,7 +121,7 @@ $(TEST): $(NAME) $(C_OBJ_FILES)
 	@$(ECHO) "$(GREEN)[LNK] Executable built successfully.$(NC)"
 
 # Test executable, links against libasm.a in current dir
-$(TEST_BONUS): $(NAME_BONUS) $(C_BONUS_OBJ_FILES) $(TEST)
+$(TEST_BONUS): $(NAME_BONUS) $(C_BONUS_OBJ_FILES)
 	@$(ECHO) "$(BROWN)[LNK] Building bonus test executable ...$(NC)"
 	@$(CC) $(CC_LFLAGS) $(C_BONUS_OBJ_FILES) -L. $(NAME) $(NAME_BONUS) -lasm -o $@
 	@$(ECHO) "$(GREEN)[LNK] Bonus Executable built successfully.$(NC)"

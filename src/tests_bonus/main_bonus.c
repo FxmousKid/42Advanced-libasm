@@ -6,7 +6,7 @@
 /*   By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:44:29 by inazaria          #+#    #+#             */
-/*   Updated: 2025/06/17 23:14:57 by inazaria         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:14:07 by inazaria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ int main(void)
 	printf("Now launching Tests...\n\n");
 	test_ft_list_size();
 	write(1, "\n", 1);
+	test_ft_list_remove_if();
+	write(1, "\n", 1);
+	
+	// ft_list_remove_if(0, 0, 0, 0);
 
 	return (0); 
 }
