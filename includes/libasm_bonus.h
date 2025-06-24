@@ -6,7 +6,7 @@
 /*   By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:19:08 by inazaria          #+#    #+#             */
-/*   Updated: 2025/06/21 18:55:20 by inazaria         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:32:14 by inazaria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ extern char		*ft_strdup(const char *s);
 
 extern int		ft_list_size(t_list *lst);
 extern void		ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(void *, void *), void (*free_fct)(void *));
+extern void		ft_list_push_front(t_list **begin_list, void *data);
 
 int		test_ft_list_size(void);
 int		test_ft_list_remove_if(void);
+int		test_ft_list_push_front(void);
 
 #endif
