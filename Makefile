@@ -6,7 +6,7 @@
 #    By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 18:49:10 by inazaria          #+#    #+#              #
-#    Updated: 2025/06/24 18:56:58 by inazaria         ###   ########.fr        #
+#    Updated: 2025/07/29 17:43:03 by inazaria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ C_BONUS_TEST_FILES_NAMES = tests_bonus/main_bonus.c
 C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_size_bonus.c 
 C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_remove_if_bonus.c 
 C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_list_push_front_bonus.c 
+C_BONUS_TEST_FILES_NAMES += tests_bonus/ft_atoi_base_bonus.c 
 
 ASM_SRC_FILES_NAMES = asm/ft_strlen.s
 ASM_SRC_FILES_NAMES += asm/ft_write.s
@@ -39,6 +40,8 @@ ASM_SRC_FILES_NAMES += asm/ft_strdup.s
 ASM_BONUS_SRC_FILES_NAMES = asm_bonus/ft_list_size_bonus.s
 ASM_BONUS_SRC_FILES_NAMES += asm_bonus/ft_list_push_front.s
 ASM_BONUS_SRC_FILES_NAMES += asm_bonus/ft_list_remove_if_bonus.s
+ASM_BONUS_SRC_FILES_NAMES += asm_bonus/ft_atoi_base_bonus.s
+ASM_BONUS_SRC_FILES_NAMES += asm_bonus/check_base_aux_bonus.s
 
 # Mandatory .s and .c files
 ASM_SRC_FILES := $(addprefix $(SRC_DIR), $(ASM_SRC_FILES_NAMES))

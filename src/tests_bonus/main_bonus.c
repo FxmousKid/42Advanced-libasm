@@ -6,7 +6,7 @@
 /*   By: inazaria <inazaria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:44:29 by inazaria          #+#    #+#             */
-/*   Updated: 2025/06/24 13:51:53 by inazaria         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:24:39 by inazaria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int main(void)
 	write(1, "\n", 1);
 	test_ft_list_push_front();
 	write(1, "\n", 1);
-	
-	// ft_list_remove_if(0, 0, 0, 0);
-
+	test_ft_atoi_base();
+	write(1, "\n", 1);
 	return (0); 
 }
