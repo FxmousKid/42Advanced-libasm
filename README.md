@@ -34,3 +34,14 @@ docker buildx build --platform linux/amd64 -t libasm-dev .
 ```bash
 docker run --rm -it --platform linux/amd64 -v "$PWD:/app" -w /app --network="host" libasm-alpine zsh
 ```
+
+> [!WARNING]
+> You might encoutner some common error message that say something, but the solution is something else
+
+#### Permission error when using raw 'make ...'
+
+*Dont* . when not on destination arch, always refer back to the run script
+
+#### Shell exec format error
+
+Usually due to the fact that the docker qemu hasn't been run, refer to run.sh -h
